@@ -9,43 +9,37 @@ export default function Profile() {
   const [profileImage, setProfileImage] = useState(
     "https://via.placeholder.com/150"
   );
-  const [isChanged, setIsChanged] = useState(false); // Track changes
-
-  // Handle profile image change
+  const [isChanged, setIsChanged] = useState(false);
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const imageUrl = URL.createObjectURL(e.target.files[0]);
       setProfileImage(imageUrl);
-      setIsChanged(true); // Show save button
+      setIsChanged(true);
     }
   };
 
-  // Handle name edit
   const handleEditClick = () => {
     setIsEditing(true);
-    setIsChanged(true); // Show save button
+    setIsChanged(true);
   };
-
-  // Handle save changes
   const handleSaveChanges = () => {
     setIsEditing(false);
-    setIsChanged(false); // Hide save button after saving
+    setIsChanged(false);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 text-gray-900">
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative bg-gray-800/80 backdrop-blur-lg shadow-lg p-8 rounded-lg w-96 border border-gray-700 text-center"
+        className="relative bg-white shadow-lg p-8 rounded-lg w-96 border border-gray-300 text-center"
       >
-        {/* Profile Image with Edit Option */}
         <div className="relative group w-32 h-32 mx-auto mb-4">
           <img
             src={profileImage}
             alt="Profile"
-            className="w-full h-full object-cover rounded-full border-4 border-gray-700"
+            className="w-full h-full object-cover rounded-full border-4 border-gray-300"
           />
           <label
             htmlFor="imageUpload"
@@ -61,17 +55,15 @@ export default function Profile() {
             />
           </label>
         </div>
-
-        {/* Name with Edit Button */}
         <div className="flex justify-center items-center space-x-2">
           {isEditing ? (
             <input
               type="text"
-              className="bg-gray-700 text-center p-2 rounded outline-none text-white"
+              className="bg-gray-200 text-center p-2 rounded outline-none text-gray-900"
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
-                setIsChanged(true); // Show save button
+                setIsChanged(true);
               }}
             />
           ) : (
@@ -85,15 +77,14 @@ export default function Profile() {
           )}
           <button
             onClick={handleEditClick}
-            className="p-2 bg-gray-700 rounded hover:bg-gray-600"
+            className="p-2 bg-gray-200 rounded hover:bg-gray-300"
           >
             <FaEdit />
           </button>
         </div>
 
-        <p className="text-gray-400 mt-2">{email}</p>
+        <p className="text-gray-500 mt-2">{email}</p>
 
-        {/* Save Changes Button - Visible only when changes are made */}
         {isChanged && (
           <button
             onClick={handleSaveChanges}
