@@ -3,7 +3,7 @@ import mongoose, { Document, Schema } from "mongoose";
 interface Iuser extends Document {
     name: string,
     place: string,
-    phonNumber: number,
+    phoneNumber: number,
     email: string,
     password: string,
     image:string

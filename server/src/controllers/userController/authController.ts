@@ -74,6 +74,6 @@ export const checkLoginStatus = (req: Request, res: Response) => {
         res.json({ ok: false, msg: "Please login" });
         return
     }
-
+    
     res.json({ ok: true, user: (req as any).user });
 };

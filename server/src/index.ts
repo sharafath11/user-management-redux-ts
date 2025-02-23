@@ -5,9 +5,11 @@ import adminRoute from "../src/routes/AdminRoutes"
 import userRoutes from "../src/routes/userRoutes"
 import { connectDB } from "./config/db";
 import cookieParser from "cookie-parser"
+import bodyParser from "body-parser";
 const app = express();
 dotenv.config()
 const PORT = 4000;
+app.use(bodyParser.json())
 app.use(cookieParser());
 app.use(express.json());
 app.use(

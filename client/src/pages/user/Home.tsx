@@ -3,18 +3,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { getRequest } from "../../utils/services";
 import { useNavigate } from "react-router-dom";
 import { IUser } from "../../utils/Interfaces";
-import { login } from "../../redux/authSlice";
+import { login, logout } from "../../redux/authSlice";
 
 export default function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state): IUser => state.auth);
-
+  console.log(user)
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const res = await getRequest("check-auth");
         if (!res?.ok) {
+          dispatch(logout())
           navigate("/login");
         } else {
           dispatch(login({ isLogged: true }));
@@ -32,7 +33,7 @@ export default function Home() {
      <main className="flex min-h-screen flex-col items-center justify-center p-24">
       <div className="text-center">
         <img
-          src="" 
+          src={user.image} 
           alt="Profile Picture"
           width={200}
           height={200}

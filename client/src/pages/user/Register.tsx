@@ -1,14 +1,10 @@
 import {motion} from "framer-motion"
 import React, { useState } from "react";
 import { IRegister } from "../../utils/Interfaces";
-import axios from "axios";
 import { postRequest } from "../../utils/services";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { login } from "../../redux/authSlice";
+import { validateForm } from "../../utils/Validate";
 export default function Register() {
-  const dispatch = useDispatch();
   const navigate=useNavigate()
   const [formData, setFormData] = useState<IRegister>({
     name: "",
@@ -16,13 +12,15 @@ export default function Register() {
     phoneNumber: 0,
     email: "",
     password: "",
-    token: ""
+    image: "",
+    loggedIn:false
   })
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if(!validateForm(formData))return 
     const res = await postRequest("register", formData);
     if (res.ok) {
      navigate("/login")

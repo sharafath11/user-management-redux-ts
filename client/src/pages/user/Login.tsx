@@ -27,8 +27,9 @@ export default function Login() {
     setLoading(true);
     try {
       const res = await postRequest("login", formData);
+      console.log("res",res)
       if (res?.ok) {
-        dispatch(login(res));
+        dispatch(login(res.user));
         navigate("/");
       } else {
         console.error("Login failed:", res);
