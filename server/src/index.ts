@@ -12,6 +12,10 @@ const PORT = 4000;
 app.use(bodyParser.json())
 app.use(cookieParser());
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/uploads", express.static("uploads"));
+
 app.use(
     cors({
       origin: "http://localhost:5173", 

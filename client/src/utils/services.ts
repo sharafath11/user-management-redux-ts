@@ -4,17 +4,18 @@ import { showErrorToast, showInfoToast, showSuccessToast } from "./Toastyfy";
 export const baseUrl = "http://localhost:4000/";
 
 export const postRequest = async (url: string, body: object | FormData) => {
-  console.log(`${baseUrl}${url}`);
   try {
+    const isFormData = body instanceof FormData; 
+
     const res = await axios.post(`${baseUrl}${url}`, body, {
-      withCredentials: true,
+      withCredentials: true, 
+      headers: isFormData ? { "Content-Type": "multipart/form-data" } : {}, // ✅ Only set headers for JSON
     });
 
     if (res.data.ok) {
       showSuccessToast(res.data.msg);
       return res.data;
     }
-    console.log("resssss",res)
 
     showInfoToast(res.data.msg || "Something went wrong!");
     return null;

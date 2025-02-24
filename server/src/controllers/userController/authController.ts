@@ -34,11 +34,16 @@ export const LoginController = async (req: Request, res: Response): Promise<void
             res.json({ ok: false, msg: "Invalid credentials" });
             return;
         }
+       
 
         const confirmPassword = await bcrypt.compare(password, user.password)
         if (!confirmPassword) {
             res.json({ ok: false, msg: "Invalid credentials" });
             return;
+        }
+        if (user.isBlocked) {
+            res.json({ ok: false, msg: "Youre account is blocked" });
+            return 
         }
         const token = jwt.sign(
             { role: "user", userId: user._id }, 

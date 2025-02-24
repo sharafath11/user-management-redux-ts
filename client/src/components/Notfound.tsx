@@ -14,8 +14,6 @@ const navigate=useNavigate()
       >
         404
       </motion.h1>
-
-      {/* Animated Heading */}
       <motion.h2
         className="text-4xl font-bold mt-4"
         initial={{ opacity: 0, y: -20 }}
@@ -24,8 +22,6 @@ const navigate=useNavigate()
       >
         Oops! Page Not Found
       </motion.h2>
-
-      {/* Animated Paragraph */}
       <motion.p
         className="text-lg text-gray-600 dark:text-gray-400 mt-2 text-center max-w-md"
         initial={{ opacity: 0, y: 20 }}
@@ -34,8 +30,6 @@ const navigate=useNavigate()
       >
         The page you're looking for doesn’t exist or has been moved.
       </motion.p>
-
-      {/* Animated Button */}
       <motion.a
        onClick={()=>navigate("/")}
         className="cursor-pointer mt-6 px-6 py-3 text-lg font-medium text-white bg-blue-600 dark:bg-blue-500 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-400 transition-all duration-300 shadow-md"

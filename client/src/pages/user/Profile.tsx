@@ -6,6 +6,7 @@ import { IUser } from "../../utils/Interfaces";
 import { postRequest } from "../../utils/services";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../redux/authSlice";
+import { editingValidateForm } from "../../utils/Validate";
 
 export default function Profile() {
   const dispatch=useDispatch()
@@ -18,35 +19,50 @@ export default function Profile() {
   });
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
-      console.log(e.target.files);
-      
-      const imageUrl = URL.createObjectURL(e.target.files[0]);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        image: imageUrl
-      }));
+       
+        const file = e.target.files[0]; 
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            image: file
+        }));
     }
-  };
+};
+
   
 
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
-  const handleSaveChanges = async() => {
-   try {
-     const res = await postRequest("edit", formData);
-     if (res.ok) {
-      dispatch(updateUser(formData))
-    }
-   } catch (error) {
+  const handleSaveChanges = async () => {
+    try {
+      const updatedFormData = new FormData();
+      updatedFormData.append("name", formData.name);
+      updatedFormData.append("phoneNumber", formData.phoneNumber as string);
+      updatedFormData.append("image", formData.image); 
+      if (!editingValidateForm(formData)) {
+        return
+      }
+      const res = await postRequest("edit", updatedFormData);
     
-   }
+      if (res?.ok) {
+        console.log(res)
+        dispatch(updateUser({ ...formData, image: res.imageUrl })); 
+        return 
+      } else {
+        formData.name = user.name;
+        formData.phoneNumber=user.phoneNumber
+      } 
+     
+
+    } catch (error) {
+      console.error(error);
+    }
     setIsEditing(false);
   };
-
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 text-gray-900">
       <motion.div
@@ -58,12 +74,12 @@ export default function Profile() {
         <div className="relative group w-32 h-32 mx-auto mb-4">
   {/* Profile Image */}
   <img
-    src={formData.image}
+     src={`http://localhost:4000/${user.image}`}
     alt="Profile"
     className="w-full h-full object-cover rounded-full border-4 border-gray-300"
   />
 
-  {/* Show Image Preview & Upload Option When Editing */}
+
   {isEditing && (
     <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 rounded-full">
       {formData.image && (

@@ -13,7 +13,7 @@ import { IUser } from "./utils/Interfaces"
 
 
 const App = () => {
-  const user=useSelector((state):IUser=>state?.auth)
+  const user = useSelector((state): IUser => state?.auth);
   const route = createBrowserRouter([
     {
       path: "/", element: <UserLayout />,

@@ -1,7 +1,16 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { postRequest } from "../../utils/services";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { adminLogin } from "../../redux/adminSlice";
 
 export default function AdminLogin() {
+  const navigate = useNavigate()
+  const adminS = useSelector((state) => state.admin);
+  const dispatch=useDispatch()
+ console.log(adminS)
   const [admin, setAdmin] = useState({
     email: "",
     password: "",
@@ -11,8 +20,15 @@ export default function AdminLogin() {
     setAdmin({ ...admin, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = () => {
-    alert("Login Successful!"); // Replace with real authentication logic
+  const handleLogin = async () => {
+    const res =await  postRequest("admin/login", admin);
+    if (res?.ok) {
+      navigate("/admin/dashboard");
+      dispatch(adminLogin())
+    }
+    else {
+     navigate("/admin")
+    }
   };
 
   return (
@@ -27,7 +43,7 @@ export default function AdminLogin() {
           Admin Login
         </h2>
 
-        {/* Email Input */}
+ 
         <div className="mb-4">
           <label className="block text-gray-700 dark:text-gray-300 font-medium">Email</label>
           <input
@@ -52,8 +68,6 @@ export default function AdminLogin() {
             placeholder="Enter password"
           />
         </div>
-
-        {/* Login Button */}
         <motion.button
           onClick={handleLogin}
           className="w-full py-2 rounded-lg font-semibold text-white bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-400 transition-all shadow-md"
